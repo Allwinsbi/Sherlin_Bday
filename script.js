@@ -125,10 +125,54 @@ $("#soundBtn").addEventListener("click", () => {
   else songTrack.pause();
 });
 
+/* Curtain: letter-by-letter name reveal, floating balloons, beat-glow button */
+const nameWrap = $("#curtainName");
+nameWrap.innerHTML = [...FRIEND_NAME].map((c, i) =>
+  `<span class="ltr" style="animation-delay:${0.3 + i * 0.12}s">${c}</span>`).join("");
+[...nameWrap.children].forEach((el, i) => setTimeout(() => {
+  const r = el.getBoundingClientRect();
+  burst(r.left + r.width / 2, r.top + r.height / 2, 12, 3);
+}, (0.3 + i * 0.12) * 1000 + 500));
+$("#startBtn").classList.add("beat");
+
+const balloonBox = $("#curtBalloons");
+const BALLOON_COLORS = ["#ff7eb6", "#ffe29a", "#7ee8d2", "#b59cff", "#ffb88c"];
+for (let i = 0; i < 12; i++) {
+  const b = document.createElement("div");
+  b.className = "cb";
+  b.style.left = 4 + Math.random() * 90 + "%";
+  b.style.background = `radial-gradient(circle at 30% 30%, #fff8 0, ${BALLOON_COLORS[i % BALLOON_COLORS.length]} 45%)`;
+  b.style.animationDuration = 9 + Math.random() * 7 + "s";
+  b.style.animationDelay = -Math.random() * 12 + "s";
+  b.addEventListener("click", () => {
+    if (b.classList.contains("pop")) return;
+    b.classList.add("pop"); sfxPop();
+    const r = b.getBoundingClientRect();
+    burst(r.left + r.width / 2, r.top + r.height / 2, 22, 5);
+    setTimeout(() => b.remove(), 220);
+  });
+  balloonBox.appendChild(b);
+}
+
+/* 3 - 2 - 1 countdown with a drum beat, then the curtain opens */
+let countingDown = false;
 $("#startBtn").addEventListener("click", () => {
-  curtain.classList.add("open");
-  setTimeout(() => curtain.classList.add("gone"), 1300);
-  sfxChime(); confettiRain(); startMusic();
+  if (countingDown) return;
+  countingDown = true;
+  $("#startBtn").style.display = "none";
+  const count = $("#curtCount");
+  const steps = ["3", "2", "1", "🎉"];
+  steps.forEach((s, i) => setTimeout(() => {
+    count.textContent = s;
+    count.classList.remove("show"); void count.offsetWidth; count.classList.add("show");
+    try { tone(i < 3 ? 110 : 220, ctx().currentTime, 0.18, 0.5, "sine"); } catch (e) {}
+  }, i * 900));
+  setTimeout(() => {
+    count.classList.remove("show");
+    curtain.classList.add("open");
+    setTimeout(() => curtain.classList.add("gone"), 1300);
+    sfxChime(); confettiRain(); startMusic();
+  }, steps.length * 900);
 });
 
 /* ===== Typed greeting ===== */
