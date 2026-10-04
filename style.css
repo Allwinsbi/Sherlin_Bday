@@ -352,3 +352,7 @@ main .scene{transform-style:preserve-3d}
   .cake-stage{transform:scale(.9)}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* hide cursor glow while the curtain is closed so it does not show through the seam */
+body:has(.curtain:not(.gone)) .glow-orb,
+body:has(.curtain:not(.gone)) .stars{opacity:0}
