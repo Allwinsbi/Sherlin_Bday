@@ -38,36 +38,31 @@ function showTapForMusic() {
   b.addEventListener("click", () => { songTrack.play().then(() => b.remove()).catch(() => {}); });
   document.body.appendChild(b);
 }
-const songTrack = new Audio("music/birthday-song.mp3");
-songTrack.loop = true;
+/* Your songs: add file names here. They play one after another and loop forever. */
+const MUSIC_TRACKS = [
+  "music/birthday-song.mp3",
+];
+const songTrack = new Audio();
 songTrack.volume = 0.6;
-let songOk = true; // assume your song works; switches to false only if the file fails to load
-songTrack.addEventListener("error", () => songOk = false);
+let trackIdx = 0;
+function playTrack() {
+  songTrack.src = MUSIC_TRACKS[trackIdx];
+  songTrack.play().catch(() => showTapForMusic());
+}
+songTrack.addEventListener("ended", () => {
+  trackIdx = (trackIdx + 1) % MUSIC_TRACKS.length; // loops back to the first song
+  playTrack();
+});
+songTrack.addEventListener("error", () => {
+  // skip a song that fails to load, so the loop keeps going
+  trackIdx = (trackIdx + 1) % MUSIC_TRACKS.length;
+  if (MUSIC_TRACKS.length > 1) playTrack();
+});
 
 function startMusic() {
   if (musicTimer) return;
-  if (songOk) {
-    songTrack.play().catch(() => showTapForMusic());
-    return;
-  }
-  const playOnce = () => {
-    if (!musicOn) return;
-    try {
-      // Livelier version: faster tempo, melody + harmony + bass + sparkle layer
-      let t = ctx().currentTime + 0.1;
-      TUNE.forEach(([n, beats]) => {
-        const f = NOTE[n], len = beats * 0.26;
-        tone(f, t, len, 0.16, "triangle");          // melody
-        tone(f * 1.26, t, len, 0.07, "sine");       // harmony (major third above)
-        tone(f / 2, t, len, 0.09, "sawtooth");      // bass
-        tone(f * 2, t + len * 0.5, len * 0.4, 0.05, "sine"); // sparkle
-        t += beats * 0.28;
-      });
-    } catch (e) {}
-  };
-  const songLength = TUNE.reduce((sum, [, beats]) => sum + beats * 0.36, 0);
-  playOnce();
-  musicTimer = setInterval(playOnce, (songLength + 2) * 1000);
+  musicTimer = true;
+  playTrack();
 }
 
 /* ===== Starfield with parallax ===== */
@@ -126,7 +121,7 @@ $("#soundBtn").addEventListener("click", () => {
   musicOn = !musicOn;
   $("#soundBtn").textContent = musicOn ? "🎶 Music on" : "🔇 Music off";
   $("#soundBtn").classList.toggle("off", !musicOn);
-  if (musicOn) { if (songOk) songTrack.play().catch(() => {}); }
+  if (musicOn) songTrack.play().catch(() => showTapForMusic());
   else songTrack.pause();
 });
 
