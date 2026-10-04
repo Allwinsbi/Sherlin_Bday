@@ -275,7 +275,7 @@ html[data-theme] body{transition:background .8s}
 .cb:after{content:"";position:absolute;bottom:-12px;left:50%;width:2px;height:12px;background:rgba(255,246,238,.5)}
 @keyframes cbUp{to{transform:translateY(-115vh) rotate(8deg)}}
 .cb.pop{transform:scale(1.6);opacity:0;transition:all .2s}
-.curt-count{position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:4;font-family:'Pacifico',cursive;font-size:clamp(6rem,22vw,12rem);color:var(--gold);text-shadow:0 0 40px rgba(255,126,182,.7);pointer-events:none}
+.curt-count{position:absolute;left:0;right:0;top:80%;display:none;align-items:flex-start;justify-content:center;z-index:4;font-family:'Pacifico',cursive;font-size:clamp(3rem,10vw,5rem);color:var(--gold);text-shadow:0 0 40px rgba(255,126,182,.7);pointer-events:none}
 .curt-count.show{display:flex;animation:countPop .8s ease-out}
 @keyframes countPop{0%{transform:scale(2);opacity:0}30%{transform:scale(1);opacity:1}100%{transform:scale(.8);opacity:0}}
 .curtain-btn.beat{animation:beatGlow 1s ease-in-out infinite}
