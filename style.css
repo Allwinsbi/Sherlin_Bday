@@ -19,7 +19,9 @@ main{position:relative;z-index:2}
 .star{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;animation:twinkle var(--d) ease-in-out infinite}
 @keyframes twinkle{0%,100%{opacity:.15}50%{opacity:1}}
 
-.scene{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:80px 22px;position:relative}
+.scene{min-height:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:56px 22px;position:relative}
+.scene.hero{min-height:100vh}
+.scene.closing{min-height:auto}
 .kicker{font-size:.8rem;letter-spacing:4px;text-transform:uppercase;color:var(--peach);margin:0 0 8px;opacity:.9}
 .head{font-family:'Pacifico',cursive;font-weight:400;font-size:clamp(1.8rem,5vw,2.8rem);color:var(--gold);margin:0 0 28px;text-shadow:0 0 22px rgba(255,226,154,.25)}
 
