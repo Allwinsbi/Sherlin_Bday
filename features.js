@@ -160,15 +160,25 @@ function pzRender() {
   });
 }
 function pzMove(i) {
-  const b = pzOrder.indexOf(8), adj = [i - 1, i + 1, i - 3, i + 3];
-  if (!adj.includes(b) || (b === i - 1 && i % 3 === 0) || (b === i + 1 && i % 3 === 2)) return;
-  [pzOrder[i], pzOrder[b]] = [pzOrder[b], pzOrder[i]];
+  // Tap any tile in the same row or column as the gap: tiles in between slide over
+  const b = pzOrder.indexOf(8);
+  const sameRow = Math.floor(i / 3) === Math.floor(b / 3);
+  const sameCol = i % 3 === b % 3;
+  if (!sameRow && !sameCol) return;
+  const step = sameRow ? (i > b ? 1 : -1) : (i > b ? 3 : -3);
+  let cur = b;
+  while (cur !== i) {
+    const nxt = cur + step;
+    pzOrder[cur] = pzOrder[nxt];
+    cur = nxt;
+  }
+  pzOrder[i] = 8;
   pzRender(); sfxPop();
   if (pzOrder.every((n, k) => n === k)) { sfxChime(); confettiRain(120); }
 }
 function pzShuffle() {
   pzOrder = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-  for (let s = 0; s < 120; s++) {
+  for (let s = 0; s < 40; s++) {
     const b = pzOrder.indexOf(8), r = Math.floor(b / 3), c = b % 3, moves = [];
     if (r > 0) moves.push(b - 3); if (r < 2) moves.push(b + 3);
     if (c > 0) moves.push(b - 1); if (c < 2) moves.push(b + 1);
