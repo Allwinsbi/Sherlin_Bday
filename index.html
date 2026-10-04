@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For Sherlin 🌙 Happy Birthday</title>
+  <meta name="description" content="A birthday surprise just for Sherlin 🎂✨ Open the curtain and explore!" />
+  <meta property="og:title" content="A birthday surprise for Sherlin 🎂" />
+  <meta property="og:description" content="Open the curtain, play games, spin the 3D cake and leave a note!" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="images/sherlin.jpeg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#0f0c29" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <canvas id="fx" aria-hidden="true"></canvas>
+  <div class="stars" id="stars" aria-hidden="true"></div>
+
+  <!-- Curtain intro -->
+  <div class="curtain" id="curtain">
+    <div class="curtain-panel left"></div>
+    <div class="curtain-panel right"></div>
+    <div class="curtain-center">
+      <p class="curtain-small">a little surprise for</p>
+      <h1 class="curtain-name">Sherlin</h1>
+      <button class="curtain-btn" id="startBtn">Open the curtain ✨</button>
+    </div>
+  </div>
+
+  <div class="glow-orb" id="glowOrb" aria-hidden="true"></div>
+  <button class="surprise-btn" id="surpriseBtn" aria-label="Surprise me">🎁 Surprise me</button>
+
+  <div class="top-controls">
+    <button class="theme-btn" id="themeBtn" aria-label="Change theme">🎨 Theme</button>
+    <button class="sound-pill" id="soundBtn" aria-label="Toggle music">🎶 Music on</button>
+  </div>
+
+  <main>
+    <!-- 1. Hero polaroid -->
+    <section class="scene hero">
+      <p class="greet" id="greet"></p>
+      <div class="polaroid" id="polaroid">
+        <img src="images/sherlin.jpeg" alt="Sherlin" />
+        <p class="polaroid-cap">Sherlin · today's star</p>
+      </div>
+      <p class="hero-line">Happy Birthday! Today the whole sky is yours. 🌙💖</p>
+      <div class="scroll-cue">scroll ↓</div>
+    </section>
+
+    <!-- 2. Envelope -->
+    <section class="scene envelope-scene">
+      <p class="kicker">a sealed letter</p>
+      <h2 class="head">Tap to open your envelope</h2>
+      <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Open envelope">
+        <div class="env-flap"></div>
+        <div class="env-body"></div>
+        <div class="env-seal">♥</div>
+      </div>
+    </section>
+
+    <!-- 3. Timeline -->
+    <section class="scene timeline-scene">
+      <p class="kicker">the story so far</p>
+      <h2 class="head">Chapters of you</h2>
+      <ol class="timeline">
+        <li class="tl-item" data-reveal><span class="tl-dot"></span>
+          <div class="tl-card"><b>The kind one</b><p>You always make space for everyone, even when you have none to spare.</p></div>
+        </li>
+        <li class="tl-item" data-reveal><span class="tl-dot"></span>
+          <div class="tl-card"><b>The bright one</b><p>Your laugh can turn an ordinary day into a story worth telling.</p></div>
+        </li>
+        <li class="tl-item" data-reveal><span class="tl-dot"></span>
+          <div class="tl-card"><b>The brave one</b><p>New year, new chapters. Go write them the way only you can.</p></div>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 4. Balloon pop -->
+    <section class="scene balloon-scene">
+      <p class="kicker">quick game</p>
+      <h2 class="head">Pop all the balloons</h2>
+      <p class="score" id="score">0 / 12 popped</p>
+      <div class="balloon-field" id="balloonField"></div>
+    </section>
+
+    <!-- 5. Candles (mic or tap) -->
+    <section class="scene cake-scene">
+      <p class="kicker">make a wish</p>
+      <h2 class="head">Blow out the candles</h2>
+      <div class="cake-stage" id="cakeStage" role="button" tabindex="0" aria-label="Blow out candles">
+        <div class="row-candles" id="rowCandles"></div>
+        <div class="cake-tier t1"></div>
+        <div class="cake-tier t2"></div>
+      </div>
+      <p class="cake-note" id="cakeNote">tap the cake, or blow into your mic 🎤</p>
+    </section>
+
+    <!-- 6. Wish jar -->
+    <section class="scene jar-scene">
+      <p class="kicker">pick one</p>
+      <h2 class="head">Choose a wish for the year</h2>
+      <div class="slips">
+        <button class="slip" data-wish="Endless love 💗">Love</button>
+        <button class="slip" data-wish="Dreams that come true 🌠">Dreams</button>
+        <button class="slip" data-wish="Trips to new places ✈️">Travel</button>
+        <button class="slip" data-wish="Laughs every single day 😄">Laughs</button>
+      </div>
+      <p class="slip-out" id="slipOut"></p>
+    </section>
+
+    <!-- 6b. Last year's wishes -->
+    <section class="scene pooja-scene">
+      <p class="kicker">from last year</p>
+      <h2 class="head">Best wishes from Pooja</h2>
+      <div class="tl-card pooja-card tilt-me" data-reveal>
+        <p id="poojaMsg">“Happy Birthday, Sherlin! 💖 Wishing you a year full of smiles, success and everything your heart wants. 💛”</p>
+        <b class="pooja-sign">— Pooja</b>
+      </div>
+    </section>
+
+    <!-- 6c. 3D photo carousel + countdown + scratch card -->
+    <section class="scene extras-scene">
+      <p class="kicker">more surprises</p>
+      <h2 class="head">Your 3D photo carousel</h2>
+      <div class="carousel" id="carousel">
+        <div class="carousel-ring" id="carouselRing">
+          <div class="car-card"><img src="images/sherlin.jpeg" alt="Sherlin photo 1" /></div>
+          <div class="car-card"><img src="images/sherlin.jpeg" alt="Sherlin photo 2" /></div>
+          <div class="car-card"><span>🌸</span></div>
+          <div class="car-card"><span>🎈</span></div>
+          <div class="car-card"><span>💫</span></div>
+          <div class="car-card"><span>🎂</span></div>
+        </div>
+      </div>
+      <p class="kicker" style="margin-top:36px">until the birthday day ends</p>
+      <div class="countdown" id="countdown" aria-live="polite"></div>
+
+      <p class="kicker" style="margin-top:40px">scratch to reveal</p>
+      <div class="scratch-wrap">
+        <div class="scratch-reveal">Sherlin, you're one of a kind 💖</div>
+        <canvas id="scratchCanvas" aria-label="Scratch here"></canvas>
+      </div>
+    </section>
+
+    <!-- 6d. Flip facts + heart rain + 3D ring -->
+    <section class="scene more-scene">
+      <div class="progress" id="progress" aria-hidden="true"></div>
+      <p class="kicker">tap to flip</p>
+      <h2 class="head">Little facts about you</h2>
+      <div class="flips">
+        <button class="flipcard" aria-label="Flip card">
+          <span class="fc-front">🌟<small>Tap me</small></span>
+          <span class="fc-back">You make everyone feel welcome</span>
+        </button>
+        <button class="flipcard" aria-label="Flip card">
+          <span class="fc-front">🍰<small>Tap me</small></span>
+          <span class="fc-back">Your favourite thing is probably cake</span>
+        </button>
+        <button class="flipcard" aria-label="Flip card">
+          <span class="fc-front">🎧<small>Tap me</small></span>
+          <span class="fc-back">Your laugh is the best playlist</span>
+        </button>
+      </div>
+
+      <button class="heart-rain-btn" id="heartRainBtn">💖 Send hearts 💖</button>
+
+      <div class="ring-stage" aria-hidden="true">
+        <div class="ring">
+          <span style="--a:0deg">Happy</span>
+          <span style="--a:45deg">Birthday</span>
+          <span style="--a:90deg">Sherlin</span>
+          <span style="--a:135deg">✨</span>
+          <span style="--a:180deg">Shine</span>
+          <span style="--a:225deg">Bright</span>
+          <span style="--a:270deg">Love</span>
+          <span style="--a:315deg">🎂</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6e. Birthday wall -->
+    <section class="scene wall-scene">
+      <p class="kicker">leave a note</p>
+      <h2 class="head">The birthday wall</h2>
+      <form class="wall-form" id="wallForm">
+        <input id="wallName" maxlength="20" placeholder="Your name" required />
+        <input id="wallMsg" maxlength="120" placeholder="Write a birthday message…" required />
+        <button type="submit">Post 💌</button>
+      </form>
+      <ul class="wall-list" id="wallList"></ul>
+    </section>
+
+    <!-- 6f. Quiz -->
+    <section class="scene quiz-scene">
+      <p class="kicker">how well do you know Sherlin?</p>
+      <h2 class="head">Birthday quiz</h2>
+      <div class="quiz-card" id="quizCard"></div>
+    </section>
+
+    <!-- 6g. Games -->
+    <section class="scene games-scene">
+      <p class="kicker">play a little</p>
+      <h2 class="head">Catch the cakes</h2>
+      <div class="catch-box" id="catchBox">
+        <div class="catch-hud"><span id="catchScore">Score 0</span><button class="mini-btn" id="catchStart">Start</button></div>
+        <div class="catch-field" id="catchField"></div>
+        <div class="catch-basket" id="catchBasket">🧺</div>
+      </div>
+
+      <p class="kicker" style="margin-top:50px">memory match</p>
+      <h2 class="head">Find the pairs</h2>
+      <p class="score" id="memScore">Moves 0</p>
+      <div class="mem-grid" id="memGrid"></div>
+    </section>
+
+    <!-- 6h. 3D cake + gift + photo book -->
+    <section class="scene three-d-scene">
+      <p class="kicker">drag to spin</p>
+      <h2 class="head">Your 3D cake</h2>
+      <div class="spin-stage" id="cakeSpin">
+        <div class="spin-cake">
+          <div class="sc-face sc-front">🎂</div>
+          <div class="sc-face sc-back">🎂</div>
+          <div class="sc-face sc-left">🍓</div>
+          <div class="sc-face sc-right">🍰</div>
+        </div>
+      </div>
+
+      <p class="kicker" style="margin-top:50px">tap to open</p>
+      <h2 class="head">A rotating gift</h2>
+      <div class="gift3d" id="gift3d" role="button" tabindex="0" aria-label="Open 3D gift">
+        <div class="g3-cube">
+          <div class="g3-face g3-front">🎁</div>
+          <div class="g3-face g3-back">💝</div>
+          <div class="g3-face g3-left">🎀</div>
+          <div class="g3-face g3-right">🌟</div>
+        </div>
+      </div>
+      <p class="g3-msg" id="g3Msg"></p>
+
+      <p class="kicker" style="margin-top:50px">flip the pages</p>
+      <h2 class="head">Photo book</h2>
+      <div class="book">
+        <div class="page" id="page1"><img src="images/sherlin.jpeg" alt="" /></div>
+        <div class="page" id="page2"><img src="images/sherlin.jpeg" alt="" /></div>
+        <div class="page" id="page3"><span>🌸 Here's to you 🌸</span></div>
+      </div>
+      <div class="book-ctrl">
+        <button class="mini-btn" id="bookPrev">◀ Prev</button>
+        <button class="mini-btn" id="bookNext">Next ▶</button>
+      </div>
+    </section>
+
+    <!-- 6i. Music, save & share -->
+    <section class="scene share-scene">
+      <p class="kicker">your own soundtrack</p>
+      <h2 class="head">Play a song</h2>
+      <label class="file-btn">🎵 Choose a song <input type="file" id="songFile" accept="audio/*" hidden /></label>
+      <audio id="songAudio" controls style="margin-top:14px;max-width:90vw"></audio>
+      <div class="song-viz" id="songViz"></div>
+
+      <p class="kicker" style="margin-top:50px">keep it</p>
+      <h2 class="head">Save or share</h2>
+      <div class="share-row">
+        <button class="mini-btn" id="saveCard">📸 Save as picture</button>
+        <button class="mini-btn" id="shareLink">🔗 Copy / share link</button>
+      </div>
+      <p class="kicker" id="shareMsg" style="margin-top:14px;text-transform:none;letter-spacing:0"></p>
+    </section>
+
+    <!-- 6j. Song, mood, constellation, next year -->
+    <section class="scene creative-scene">
+      <p class="kicker">sing along</p>
+      <h2 class="head">Happy Birthday tune</h2>
+      <button class="mini-btn" id="singBtn">🎶 Play the song</button>
+
+      <p class="kicker" style="margin-top:50px">how are you feeling?</p>
+      <h2 class="head">Pick your mood</h2>
+      <div class="mood-row">
+        <button class="mood" data-glow="#ff7eb6">😍</button>
+        <button class="mood" data-glow="#ffe29a">🥳</button>
+        <button class="mood" data-glow="#7ee8d2">😌</button>
+        <button class="mood" data-glow="#b59cff">🤩</button>
+        <button class="mood" data-glow="#ff8a5c">😋</button>
+      </div>
+
+      <p class="kicker" style="margin-top:50px">draw your constellation</p>
+      <h2 class="head">Tap to place stars</h2>
+      <canvas class="constellation" id="constellation" aria-label="Tap to draw stars"></canvas>
+      <button class="mini-btn" id="clearStars">Clear</button>
+
+      <p class="kicker" style="margin-top:50px">next birthday</p>
+      <div class="countdown" id="nextBday"></div>
+    </section>
+
+    <!-- 6k. Photo wall, voice note, puzzle, guess year, playlist, wish counter -->
+    <section class="scene all-scene">
+      <p class="kicker">tap a photo</p>
+      <h2 class="head">Photo wall</h2>
+      <div class="pwall">
+        <button class="ptile" data-cap="Our first photo together 🌸"><img src="images/sherlin.jpeg" alt="" /><span>Tap for memory</span></button>
+        <button class="ptile" data-cap="Laughing till we cried 😂"><span class="ptile-emoji">😂</span><span>Tap for memory</span></button>
+        <button class="ptile" data-cap="Cake, always cake 🍰"><span class="ptile-emoji">🍰</span><span>Tap for memory</span></button>
+        <button class="ptile" data-cap="Dreaming together 💫"><span class="ptile-emoji">💫</span><span>Tap for memory</span></button>
+      </div>
+      <p class="memo" id="pwallCap">&nbsp;</p>
+
+      <p class="kicker" style="margin-top:50px">leave a voice note</p>
+      <h2 class="head">Voice message</h2>
+      <button class="mini-btn" id="recBtn">🎙️ Record</button>
+      <p class="memo" id="recStatus"></p>
+      <audio id="voiceAudio" controls style="display:none;margin-top:10px;max-width:90vw"></audio>
+
+      <p class="kicker" style="margin-top:50px">slide the tiles</p>
+      <h2 class="head">Photo puzzle</h2>
+      <div class="puzzle" id="puzzle"></div>
+      <button class="mini-btn" id="shufflePuzzle">Shuffle</button>
+
+      <p class="kicker" style="margin-top:50px">guess the moment</p>
+      <h2 class="head">Guess the year</h2>
+      <div class="guess-box">
+        <p class="memo">When was this photo taken? (2016 – 2026)</p>
+        <input type="range" id="yearSlider" min="2016" max="2026" value="2021" />
+        <p class="gy-val" id="yearVal">2021</p>
+        <button class="mini-btn" id="yearGuess">Lock it in</button>
+        <p class="memo" id="yearRes"></p>
+      </div>
+
+      <p class="kicker" style="margin-top:50px">your playlist</p>
+      <h2 class="head">Birthday playlist</h2>
+      <label class="file-btn">🎶 Add songs <input type="file" id="plFiles" accept="audio/*" multiple hidden /></label>
+      <p class="memo" id="plNow">No songs yet</p>
+      <button class="mini-btn" id="plNext">Next ▶</button>
+
+      <p class="kicker" style="margin-top:50px">every tap counts</p>
+      <h2 class="head">Wish counter</h2>
+      <button class="mini-btn" id="wishCount">🌠 Add a wish</button>
+      <p class="memo" id="wishTotal"></p>
+    </section>
+
+    <!-- 7. Closing -->
+    <section class="scene closing">
+      <div class="orb-stage" aria-hidden="true"><div class="orb"><span></span><span></span><span></span></div></div>
+      <div class="closing-photo" id="heartPhoto" title="Tap me">
+        <img src="images/sherlin.jpeg" alt="Sherlin" />
+      </div>
+      <h2 class="closing-title">Happy Birthday,<br><span data-name></span> 🌙</h2>
+      <p class="closing-text">Sherry, may this year hold soft mornings, loud laughter, good food and every dream you're brave enough to chase.</p>
+      <button class="glow-btn" id="glowBtn">Send me a glow ✨ <small id="glowCount"></small></button>
+      <p class="sign">with love, <span data-sender></span></p>
+    </section>
+  </main>
+
+  <footer class="foot">Made with ♥ · <span id="year"></span></footer>
+
+  <script src="script.js"></script>
+  <script src="features.js"></script>
+</body>
+</html>
