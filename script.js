@@ -28,8 +28,19 @@ function sfxChime() {
   try { const t = ctx().currentTime; [784, 988, 1175, 1568].forEach((f, i) => tone(f, t + i * 0.09, 0.4, 0.15)); } catch (e) {}
 }
 /* Background music: Happy Birthday tune on a soft loop (TUNE and NOTE live in features.js) */
+const songTrack = new Audio("music/birthday-song.mp3");
+songTrack.loop = true;
+songTrack.volume = 0.6;
+let songOk = false;
+songTrack.addEventListener("canplay", () => songOk = true);
+songTrack.addEventListener("error", () => songOk = false);
+
 function startMusic() {
   if (musicTimer) return;
+  if (songOk || songTrack.readyState >= 2) {
+    songTrack.play().catch(() => {});
+    return;
+  }
   const playOnce = () => {
     if (!musicOn) return;
     try {
@@ -102,6 +113,14 @@ function confettiRain(n = 140) {
 
 /* ===== Intro curtain ===== */
 const curtain = $("#curtain");
+$("#soundBtn").addEventListener("click", () => {
+  musicOn = !musicOn;
+  $("#soundBtn").textContent = musicOn ? "🎶 Music on" : "🔇 Music off";
+  $("#soundBtn").classList.toggle("off", !musicOn);
+  if (musicOn) { if (songOk) songTrack.play().catch(() => {}); }
+  else songTrack.pause();
+});
+
 $("#startBtn").addEventListener("click", () => {
   curtain.classList.add("open");
   setTimeout(() => curtain.classList.add("gone"), 1300);
