@@ -35,7 +35,7 @@ function startMusic() {
     try {
       let t = ctx().currentTime + 0.1;
       TUNE.forEach(([n, beats]) => {
-        tone(NOTE[n] / 2, t, beats * 0.32, 0.07, "triangle");
+        tone(NOTE[n], t, beats * 0.32, 0.16, "triangle");
         t += beats * 0.36;
       });
     } catch (e) {}
