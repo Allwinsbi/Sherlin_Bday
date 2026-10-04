@@ -28,6 +28,16 @@ function sfxChime() {
   try { const t = ctx().currentTime; [784, 988, 1175, 1568].forEach((f, i) => tone(f, t + i * 0.09, 0.4, 0.15)); } catch (e) {}
 }
 /* Background music: Happy Birthday tune on a soft loop (TUNE and NOTE live in features.js) */
+function showTapForMusic() {
+  if (document.getElementById("tapMusic")) return;
+  const b = document.createElement("button");
+  b.id = "tapMusic";
+  b.className = "sound-pill";
+  b.style.cssText = "position:fixed;bottom:70px;left:50%;transform:translateX(-50%);z-index:260";
+  b.textContent = "▶ Tap for music";
+  b.addEventListener("click", () => { songTrack.play().then(() => b.remove()).catch(() => {}); });
+  document.body.appendChild(b);
+}
 const songTrack = new Audio("music/birthday-song.mp3");
 songTrack.loop = true;
 songTrack.volume = 0.6;
@@ -37,7 +47,7 @@ songTrack.addEventListener("error", () => songOk = false);
 function startMusic() {
   if (musicTimer) return;
   if (songOk) {
-    songTrack.play().catch(() => {});
+    songTrack.play().catch(() => showTapForMusic());
     return;
   }
   const playOnce = () => {
