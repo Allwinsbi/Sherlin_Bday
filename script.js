@@ -27,15 +27,22 @@ function sfxPop() { try { tone(900 + Math.random() * 400, ctx().currentTime, 0.1
 function sfxChime() {
   try { const t = ctx().currentTime; [784, 988, 1175, 1568].forEach((f, i) => tone(f, t + i * 0.09, 0.4, 0.15)); } catch (e) {}
 }
+/* Background music: Happy Birthday tune on a soft loop (TUNE and NOTE live in features.js) */
 function startMusic() {
   if (musicTimer) return;
-  const seq = [523, 659, 784, 659, 587, 698, 880, 698];
-  let i = 0;
-  musicTimer = setInterval(() => {
+  const playOnce = () => {
     if (!musicOn) return;
-    try { tone(seq[i % seq.length] / 2, ctx().currentTime, 0.9, 0.05, "triangle"); } catch (e) {}
-    i++;
-  }, 500);
+    try {
+      let t = ctx().currentTime + 0.1;
+      TUNE.forEach(([n, beats]) => {
+        tone(NOTE[n] / 2, t, beats * 0.32, 0.07, "triangle");
+        t += beats * 0.36;
+      });
+    } catch (e) {}
+  };
+  const songLength = TUNE.reduce((sum, [, beats]) => sum + beats * 0.36, 0);
+  playOnce();
+  musicTimer = setInterval(playOnce, (songLength + 2) * 1000);
 }
 
 /* ===== Starfield with parallax ===== */
