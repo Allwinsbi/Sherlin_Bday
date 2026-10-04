@@ -33,10 +33,15 @@ function startMusic() {
   const playOnce = () => {
     if (!musicOn) return;
     try {
+      // Livelier version: faster tempo, melody + harmony + bass + sparkle layer
       let t = ctx().currentTime + 0.1;
       TUNE.forEach(([n, beats]) => {
-        tone(NOTE[n], t, beats * 0.32, 0.16, "triangle");
-        t += beats * 0.36;
+        const f = NOTE[n], len = beats * 0.26;
+        tone(f, t, len, 0.16, "triangle");          // melody
+        tone(f * 1.26, t, len, 0.07, "sine");       // harmony (major third above)
+        tone(f / 2, t, len, 0.09, "sawtooth");      // bass
+        tone(f * 2, t + len * 0.5, len * 0.4, 0.05, "sine"); // sparkle
+        t += beats * 0.28;
       });
     } catch (e) {}
   };
