@@ -31,13 +31,12 @@ function sfxChime() {
 const songTrack = new Audio("music/birthday-song.mp3");
 songTrack.loop = true;
 songTrack.volume = 0.6;
-let songOk = false;
-songTrack.addEventListener("canplay", () => songOk = true);
+let songOk = true; // assume your song works; switches to false only if the file fails to load
 songTrack.addEventListener("error", () => songOk = false);
 
 function startMusic() {
   if (musicTimer) return;
-  if (songOk || songTrack.readyState >= 2) {
+  if (songOk) {
     songTrack.play().catch(() => {});
     return;
   }
