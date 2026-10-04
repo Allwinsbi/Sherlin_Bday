@@ -265,7 +265,7 @@ html[data-theme] body{transition:background .8s}
 /* ---- Curtain extras ---- */
 .curtain-panel.left{box-shadow:inset -10px 0 20px rgba(0,0,0,.35)}
 .curtain-panel.right{box-shadow:inset 10px 0 20px rgba(0,0,0,.35)}
-.pull-tab{position:absolute;right:-22px;top:88%;width:44px;height:44px;margin-top:-22px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff6c4,var(--gold));box-shadow:0 0 22px rgba(255,226,154,.8);animation:tabPulse 1.2s ease-in-out infinite;z-index:0;pointer-events:none}
+.pull-tab{position:absolute;right:-22px;bottom:14px;top:auto;width:44px;height:44px;margin-top:-22px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff6c4,var(--gold));box-shadow:0 0 22px rgba(255,226,154,.8);animation:tabPulse 1.2s ease-in-out infinite;z-index:0;pointer-events:none}
 @keyframes tabPulse{50%{transform:scale(1.18);box-shadow:0 0 34px rgba(255,226,154,1)}}
 .curtain.open .pull-tab{opacity:0;transition:opacity .2s}
 .ltr{display:inline-block;opacity:0;transform:translateY(-40px) scale(.3);animation:ltrIn .6s cubic-bezier(.2,1.6,.4,1) forwards}
